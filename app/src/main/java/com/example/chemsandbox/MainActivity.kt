@@ -28,7 +28,8 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChemSandApp() {
-    val glView = remember { SandGLView(LocalContext.current) }
+    val ctx = LocalContext.current
+    val glView = remember { SandGLView(ctx) }
     var gravity by remember { mutableStateOf(1f) }
     var reaction by remember { mutableStateOf(1f) }
     var ambient by remember { mutableStateOf(20f) }
@@ -51,7 +52,7 @@ fun ChemSandApp() {
                     }
                 )
                 Controls(gravity, reaction, ambient, brush, paused, showTemp,
-                    { gravity = it }, { reaction = it }, { ambient = it }, { brush = it },
+                    { gravity = it }, { reaction = it }, { ambient = it }, { brush = it.toInt() },
                     { paused = !paused }, { showTemp = !showTemp }, { glView.sim.clear() })
                 Palette(selected) { selected = it }
             }
@@ -69,8 +70,6 @@ private fun SliderRow(label: String, value: Float, range: ClosedFloatingPointRan
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
-@OptIn(ExperimentalMaterial3Api::class)
 @OptIn(ExperimentalMaterial3Api::class)
 private fun Controls(gravity: Float, reaction: Float, ambient: Float, brush: Int,
                      paused: Boolean, showTemp: Boolean,
@@ -92,8 +91,6 @@ private fun Controls(gravity: Float, reaction: Float, ambient: Float, brush: Int
 }
 
 @Composable
-@OptIn(ExperimentalMaterial3Api::class)
-@OptIn(ExperimentalMaterial3Api::class)
 @OptIn(ExperimentalMaterial3Api::class)
 private fun Palette(selected: Element, onPick: (Element) -> Unit) {
     val names = mapOf(
